@@ -12,7 +12,6 @@ FloatBallEvent.init = function (floatballContainObj, themeColor, positionValue, 
   let range
 
   let fmtThemeColor = colorRgb(themeColor)
-
   floatingballBox.appendChild(nodeToFragment(floatingballBox, 'init', fmtThemeColor))
 
   initBallPosition(positionValue)
@@ -41,12 +40,17 @@ FloatBallEvent.init = function (floatballContainObj, themeColor, positionValue, 
     let flag = document.createDocumentFragment()
     let child = node.firstChild
 
-    while (child) {
-      addStyle(child)
-      flag.appendChild(child)
-      child = node.firstChild
+    if (fmtThemeColor === false) {
+      node.firstChild.style.backgroundImage = `url("${themeColor}")`
+      node.firstChild.style.backgroundSize = 'cover'
+      node.firstChild.style.zIndex = 10000
+    } else {
+      while (child) {
+        addStyle(child)
+        flag.appendChild(child)
+        child = node.firstChild
+      }
     }
-
     function addStyle (node) {
       // 判断节点类型
       if (node.nodeType === 1) {
@@ -123,7 +127,7 @@ FloatBallEvent.init = function (floatballContainObj, themeColor, positionValue, 
     if (elData.isShow) {
       popoverNode.style.width = 10 + 'rem'
       popoverNode.style.height = popoverStatus + 'rem'
-      popoverNode.style.background = 'rgba(' + fmtThemeColor + ',' + 0.65 + ')'
+      popoverNode.style.background = 'rgba(' + (fmtThemeColor || colorRgb('#1989FA')) + ',' + 0.65 + ')'
     }
     popoverNode.style.transform = elData.isShow ? 'scale(1, 1)' : 'scale(0, 0)'
     updateRange()
@@ -209,6 +213,9 @@ FloatBallEvent.init = function (floatballContainObj, themeColor, positionValue, 
       return sColorChange.join(',')
     } else if (rgbReg.test(sColor)) {
       return RegExp.$1
+    } else {
+      return false
+      // return `url("${presentColor}")`
     }
   }
 
@@ -250,11 +257,7 @@ FloatBallEvent.init = function (floatballContainObj, themeColor, positionValue, 
   // PC端
   function onDocumentMouseDown (event) {
     event.preventDefault()
-    if (elData.isShow) {
-      elData.isShow = false
-    } else {
-      elData.isShow = true
-    }
+    elData.isShow = !elData.isShow
     currentBallPopover()
 
     floatingballBox.appendChild(nodeToFragment(floatingballBox, 'down', fmtThemeColor))
@@ -295,11 +298,7 @@ FloatBallEvent.init = function (floatballContainObj, themeColor, positionValue, 
   // 移动端
   function onDocumentTouchStart (event) {
     event.preventDefault()
-    if (elData.isShow) {
-      elData.isShow = false
-    } else {
-      elData.isShow = true
-    }
+    elData.isShow = !elData.isShow
     currentBallPopover()
 
     floatingballBox.appendChild(nodeToFragment(floatingballBox, 'down', fmtThemeColor))

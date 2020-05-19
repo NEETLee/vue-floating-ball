@@ -22,6 +22,9 @@
         </el-select>
       </div>
       <div class="col-box">
+        <el-button type="primary" @click="roll = !roll">旋转</el-button>
+      </div>
+      <div class="col-box">
         <div class="col-label"><strong>事件数</strong></div>
         <el-select
           v-model="popoverEventNum.currentValue"
@@ -46,6 +49,7 @@
       </el-dialog>
     </div>
     <floating-ball
+      :roll="roll"
       :theme-color="themeColor"
       :init-position="initPositionList.initPosition"
       :popover-events="popoverEvents">
@@ -59,7 +63,8 @@ export default {
   name: 'App',
   data () {
     return {
-      themeColor: '#595857',
+      roll: false,
+      themeColor: 'https://img.yzcdn.cn/vant/cat.jpeg',
       initPositionList: {
         initPosition: '',
         options: [
@@ -94,8 +99,8 @@ export default {
         { parentName: 'App', eventName: 'show-data-github', iconName: 'ion ion-logo-github', showName: 'github' },
         { parentName: 'App', eventName: 'show-data-css3', iconName: 'ion ion-logo-css3', showName: 'css3' },
         { parentName: 'App', eventName: 'show-data-html5', iconName: 'ion ion-logo-html5', showName: 'html5' }],
-        dialogMessage: '',
-        dialogVisible: false
+      dialogMessage: '',
+      dialogVisible: false
     }
   },
   created () {
@@ -141,11 +146,11 @@ export default {
       this.dialogVisible = true
       this.dialogMessage = '点击了Html5图标'
     },
-    changePopoverEvents() {
+    changePopoverEvents () {
       this.popoverEvents = []
       this.allPopoverEvents.some((currentValue, index) => {
         this.popoverEvents.push(currentValue)
-        return index === this.popoverEventNum.currentValue -1
+        return index === this.popoverEventNum.currentValue - 1
       })
     }
   }

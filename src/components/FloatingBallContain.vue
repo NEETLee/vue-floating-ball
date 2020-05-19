@@ -1,6 +1,6 @@
 <template>
   <div class="floating-ball-contain" :ref="id">
-    <floating-ball></floating-ball>
+    <floating-ball ref="ball"></floating-ball>
     <floating-ball-popover :popover-events="popoverEvents"></floating-ball-popover>
   </div>
 </template>
@@ -24,6 +24,10 @@ export default {
     initPosition: {
       type: String,
       default: 'bottom right'
+    },
+    roll: {
+      type: Boolean,
+      default: false
     },
     popoverEvents: {
       type: Array,
@@ -58,6 +62,15 @@ export default {
       this.$nextTick(() => {
         FloatBallEvent.init(this, this.themeColor, this.initPosition, 'watch')
       })
+    },
+    roll: function () {
+      if (this.roll) {
+        this.$refs.ball.$el.style.transform = 'rotate(10000turn)'
+        this.$refs.ball.$el.style.transition = '60000s'
+      } else {
+        this.$refs.ball.$el.style.transform = ''
+        this.$refs.ball.$el.style.transition = ''
+      }
     }
   },
   created () {
